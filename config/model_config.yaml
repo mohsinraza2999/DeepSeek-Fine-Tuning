@@ -1,0 +1,6 @@
+DeepSeek:
+  model_name: unsloth/DeepSeek-R1-Distill-Llama-8B-unsloth-bnb-4bit
+  quantization_config: 
+    load_in_4bit: True
+    llm_int8_enable_fp32_cpu_offload: True
+  device_map: auto
