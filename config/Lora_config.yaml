@@ -1,9 +1,9 @@
 lora:
   r: 4
-  target_modules: ["q_prog","k_proj","v_proj","o_proj"]
+  target_modules: ["q_proj","k_proj","v_proj","o_proj"]
   use_gradient_checkpointing: unsloth
-  lora_alpha: 16,
+  lora_alpha: 16
   lora_dropout: 0.1
   bias : none
-  use_rslora: False
-  loftq_config: None
+  use_rslora: false
+  loftq_config: none

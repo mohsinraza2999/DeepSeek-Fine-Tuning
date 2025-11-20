@@ -24,7 +24,7 @@ def get_struct_data():
 
 
 
-
+"""
 def formatting_func(example):
     logger.info("🚀 Formatting Data")
     data = example["conversations"]  # example is already a list of dicts
@@ -47,3 +47,29 @@ def formatting_func(example):
     train_dataset = Dataset.from_pandas(df)
 
     return train_dataset
+
+"""
+
+
+def formatting_func(example):
+    logger.info("🚀 Formatting Data")
+    data = example["conversations"]
+    formatted = []
+
+    for messages in data:
+        i = 0
+        while i < len(messages) - 1:
+            user_msg = messages[i]
+            assistant_msg = messages[i + 1]
+
+            if user_msg["role"] == "user" and assistant_msg["role"] == "assistant":
+                formatted.append({
+                    "prompt": f"<|user|>{user_msg['content']}",
+                    "response": f"<|assistant|>{assistant_msg['content']}"
+                })
+                i += 2
+            else:
+                i += 1
+
+    df = pd.DataFrame(formatted, columns=["prompt", "response"])
+    return Dataset.from_pandas(df)

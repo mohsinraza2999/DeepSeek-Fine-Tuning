@@ -1,14 +1,14 @@
 from unsloth import FastLanguageModel
+import yaml
 from src.utils.logger import get_logger
 logger = get_logger(__name__)
 
+def model_config(path="config/model_config.yaml"):
+    with open(path, "r") as f:
+        return yaml.safe_load(f)
+
+
 def load_deepseek():
     logger.info("🚀 Loading DeepSeek Model")
-    return FastLanguageModel.from_pretrained(
-    model_name="unsloth/DeepSeek-R1-Distill-Llama-8B-unsloth-bnb-4bit",
-    quantization_config={
-        "load_in_4bit":True,
-        "llm_int8_enable_fp32_cpu_offload": True
-    },
-    device_map="auto"  # or use a custom map if needed
+    return FastLanguageModel.from_pretrained( **model_config()['DeepSeek'] # or use a custom map if needed
     )

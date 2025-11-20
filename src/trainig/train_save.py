@@ -1,6 +1,7 @@
 from unsloth import FastLanguageModel
 from trl import SFTTrainer
-from transformers import TrainingArguments
+from transformers import TrainingArguments,TrainerCallback
+import yaml
 import os
 import torch
 import src.data.load_data as load_data
@@ -8,7 +9,7 @@ import src.evaluation.evaluate_model as evaluate_model
 import src.model.deepseek_model as deepseek_model
 from src.utils.logger import get_logger
 logger = get_logger(__name__)
-save_path = "./finetuned_model"
+SAVE_PATH = "./outputs/checkpoints/finetuned_model"
 
 """
 def load_train_model():
@@ -24,30 +25,24 @@ def load_train_model():
 
     trainer_status=trainer.train()
 """
-
-def load_training_yml():
-    return {"output_dir": "./results",
-    "per_device_train_batch_size": 2,
-    "gradient_accumulation_steps": 4,
-    "max_steps": 5,
-    "learning_rate": 0.0002,
-    "optim": "adamw_8bit",
-    "weight_decay": 0.01,
-    "save_strategy": "steps",
-    "save_steps": 5,
-    "report_to": "none"}
+class SaveMetricsCallback(TrainerCallback):
+    def on_epoch_end(self, args, state, control, logs=None, **kwargs):
+        with open("epoch_metrics.txt", "a") as f:
+            if logs is not None:
+                f.write(f"Epoch {state.epoch} - Loss: {logs.get('loss')}, Metrics: {logs}\n")
+            else:
+                f.write(f"Epoch {int(state.epoch)} finished (no logs dict provided)\n")
 
 
+def load_training_yml(path="config/training_config.yaml"):
+    with open(path, "r") as f:
+        return yaml.safe_load(f)
 
-def load_lora_yml():
-    return {"r": 4,
-    "target_modules": ["q_prog", "k_proj", "v_proj", "o_proj"],
-    "use_gradient_checkpointing": "unsloth",
-    "lora_alpha": 16,
-    "lora_dropout": 0.1,
-    "bias": "none",
-    "use_rslora": False,
-    "loftq_config": None}
+
+
+def load_lora_yml(path="config/Lora_config.yaml"):
+    with open(path, "r") as f:
+        return yaml.safe_load(f)
 
 
 def train_model():
@@ -56,13 +51,13 @@ def train_model():
     trainer=define_trainer()
     logger.info("Fine Tuning Starts")
     results=trainer.train()
-    logger.info("Fine Tuned The Model")
+    logger.info("Fine Tuning Complete")
 
 
 
     logger.info("Saving Fine Tuned Model")
-    trainer.save_model(save_path)
-    logger.info("Model Saved")
+    trainer.save_model(SAVE_PATH)
+    logger.info(f"Model Saved at {SAVE_PATH}")
 
     torch.cuda.empty_cache()       # clears cached memory
     torch.cuda.reset_peak_memory_stats()  # optional: reset peak usage
@@ -71,7 +66,7 @@ def train_model():
 
 
 def define_lora_config(model):
-    return FastLanguageModel.get_peft_model(model,**load_lora_yml())
+    return FastLanguageModel.get_peft_model(model,**load_lora_yml()['lora'])
 
 def define_trainer():
     
@@ -90,6 +85,8 @@ def define_trainer():
         dataset_text_field = "text",
         compute_metrics=evaluate_model.compute_metrics,
         max_seq_length = 512,
-        args = TrainingArguments(**load_training_yml()),
+        args = TrainingArguments(**load_training_yml()['trianing']),
+        formatting_func = lambda batch: [f"{p}\n{r}" for p, r in zip(batch["prompt"], batch["response"])],
+        callbacks=[SaveMetricsCallback()],
         report_to="none"
-    )
+    )#formatting_func = lambda batch: [f"{p}\n{r}" for p, r in zip(batch["prompt"], batch["response"])]
