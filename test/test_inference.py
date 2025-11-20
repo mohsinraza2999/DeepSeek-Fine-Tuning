@@ -1,16 +1,13 @@
 import sys, os
 import pytest
-from transformers import AutoTokenizer, AutoModelForCausalLM
-
+import src.model.deepseek_model as deepseek_model
 # Ensure src/ is on path
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 def test_inference_pipeline(tmp_path):
     """Ensure model can load and generate a short response."""
     # For speed, just load tokenizer/model from HF hub (not fine-tuned)
-    model_name = "unsloth/DeepSeek-R1-Distill-Llama-8B-unsloth-bnb-4bit"
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
+    model, tokenizer = deepseek_model.load_deepseek()
 
     prompt = "Hello, how are you?"
     inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=64)
