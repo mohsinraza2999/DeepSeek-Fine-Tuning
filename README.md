@@ -12,7 +12,7 @@ The project focuses on fast, memory-optimized LLM fine-tuning, enabling large-mo
 
 ---
 
-🚀 Key Highlights
+## 🚀 Key Highlights
 
 ⚡ Unsloth FastLanguageModel for optimized model loading
 
@@ -24,19 +24,19 @@ The project focuses on fast, memory-optimized LLM fine-tuning, enabling large-mo
 
 📦 Clean separation of configs, scripts, core logic, and tests
 
-📘 Dataset
+## 📘 Dataset
 vicgalle/alpaca-gpt4
 
 A high-quality instruction dataset generated using GPT-4, designed to align open-source LLMs with human-like instruction following.
 
 Sample format:
-
+```json
 {
   "instruction": "Explain bias vs variance.",
   "input": "",
   "output": "Bias refers to systematic error..."
 }
-
+```
 
 This dataset improves:
 
@@ -46,7 +46,7 @@ Reasoning quality
 
 Response clarity and structure
 
-🧠 Model Loading (Unsloth)
+## 🧠 Model Loading (Unsloth)
 
 The model is loaded using Unsloth’s optimized API, enabling:
 
@@ -56,28 +56,31 @@ Memory-efficient training
 
 Seamless PEFT / LoRA integration
 
-from unsloth import FastLanguageModel
+    ```python
+    from unsloth import FastLanguageModel
 
-def load_deepseek():
-    logger.info("🚀 Loading DeepSeek Model")
-    return FastLanguageModel.from_pretrained( **model_config()['DeepSeek'] # or use a custom map if needed
-    )
-
+    def load_deepseek():
+        logger.info("🚀 Loading DeepSeek Model")
+        return FastLanguageModel.from_pretrained( **model_config()['DeepSeek'] # or use a custom map if needed
+        )
+    ```
 
 This approach allows fine-tuning large models on consumer-grade GPUs.
 
-🏗️ Project Structure
-DeepSeek-Fine-Tuning/
-│
-├── config/               # Training & model configs
-├── scripts/              # Training and inference scripts
-├── src/                  # Core fine-tuning logic
-├── test/                 # Validation tests
-├── run_pipeline.sh       # End-to-end pipeline execution
-├── README.md
-└── LICENSE
+## 🏗️ Project Structure
 
-🛠️ Tech Stack
+    ```text
+    DeepSeek-Fine-Tuning/
+    │
+    ├── config/               # Training & model configs
+    ├── scripts/              # Training and inference scripts
+    ├── src/                  # Core fine-tuning logic
+    ├── test/                 # Validation tests
+    ├── run_pipeline.sh       # End-to-end pipeline execution
+    ├── README.md
+    └── LICENSE
+    ```
+## 🛠️ Tech Stack
 
 Python
 
@@ -91,12 +94,15 @@ DeepSeek LLM
 
 CUDA
 
-⚙️ Setup & Installation
-git clone https://github.com/mohsinraza2999/DeepSeek-Fine-Tuning.git
-cd DeepSeek-Fine-Tuning
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+## ⚙️ Setup & Installation
+
+    ```bash
+    git clone https://github.com/mohsinraza2999/DeepSeek-Fine-Tuning.git
+    cd DeepSeek-Fine-Tuning
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    ```
 
 
 Requirements
@@ -107,11 +113,14 @@ NVIDIA GPU (CUDA recommended)
 
 Minimum VRAM depends on sequence length and batch size
 
-🚀 Training
+## 🚀 Training
 
 Run the complete fine-tuning pipeline:
 
-bash run_pipeline.sh
+ 
+    ```bash
+    run_pipeline.sh
+    ```
 
 
 This performs:
@@ -124,9 +133,10 @@ Instruction fine-tuning
 
 Checkpoint saving
 
-🔍 Inference
-python scripts/infer.py \
-  --prompt "Explain gradient descent in simple terms."
+## 🔍 Inference
+    ```bash
+    python scripts/infer.py \ --prompt "Explain gradient descent in simple terms."
+    ```
 
 
 The fine-tuned model produces:
@@ -137,7 +147,7 @@ Better reasoning
 
 Improved instruction compliance vs base model
 
-📊 Evaluation
+## 📊 Evaluation
 
 Current evaluation:
 
@@ -155,7 +165,7 @@ Human preference evaluation
 
 Task-specific metrics
 
-📈 Results & Observations
+## 📈 Results & Observations
 
 ⚡ Faster training compared to standard HF loading
 
@@ -175,7 +185,7 @@ Foundation for RAG-based LLM applications
 
 Cost-efficient enterprise LLM adaptation
 
-🔮 Future Enhancements
+## 🔮 Future Enhancements
 
 LoRA hyperparameter experiments
 
@@ -187,7 +197,7 @@ FastAPI inference service
 
 Quantized deployment (4-bit / 8-bit)
 
-👨‍💻 Author
+## 👨‍💻 Author
 
 Mohsin Raza
 AI / ML Engineer
