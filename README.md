@@ -56,53 +56,54 @@ Memory-efficient training
 
 Seamless PEFT / LoRA integration
 
-    ```python
-    from unsloth import FastLanguageModel
+```python
+from unsloth import FastLanguageModel
 
-    def load_deepseek():
-        logger.info("🚀 Loading DeepSeek Model")
-        return FastLanguageModel.from_pretrained( **model_config()['DeepSeek'] # or use a custom map if needed
-        )
-    ```
+def load_deepseek():
+    logger.info("🚀 Loading DeepSeek Model")
+    return FastLanguageModel.from_pretrained( **model_config()['DeepSeek'] # or use a custom map if needed
+    )
+```
 
 This approach allows fine-tuning large models on consumer-grade GPUs.
 
 ## 🏗️ Project Structure
 
-    ```text
-    DeepSeek-Fine-Tuning/
-    │
-    ├── config/               # Training & model configs
-    ├── scripts/              # Training and inference scripts
-    ├── src/                  # Core fine-tuning logic
-    ├── test/                 # Validation tests
-    ├── run_pipeline.sh       # End-to-end pipeline execution
-    ├── README.md
-    └── LICENSE
-    ```
+```text
+DeepSeek-Fine-Tuning/
+│
+├── config/               # Training & model configs
+├── scripts/              # Training and inference scripts
+├── src/                  # Core fine-tuning logic
+├── test/                 # Validation tests
+├── run_pipeline.sh       # End-to-end pipeline execution
+├── README.md
+└── LICENSE
+```
+
 ## 🛠️ Tech Stack
 
-Python
+* Python
 
-PyTorch
+* PyTorch
 
-Hugging Face Transformers & Datasets
+* Hugging Face Transformers & Datasets
 
-Unsloth
+* Unsloth
 
-DeepSeek LLM
+* DeepSeek LLM
 
-CUDA
+* CUDA
 
 ## ⚙️ Setup & Installation
 
-    ```bash
-    git clone https://github.com/mohsinraza2999/DeepSeek-Fine-Tuning.git
-    cd DeepSeek-Fine-Tuning
-    python -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    ```
+```bash
+git clone https://github.com/mohsinraza2999/DeepSeek-Fine-Tuning.git
+cd DeepSeek-Fine-Tuning
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
 
 Requirements
@@ -118,9 +119,9 @@ Minimum VRAM depends on sequence length and batch size
 Run the complete fine-tuning pipeline:
 
  
-    ```bash
-    run_pipeline.sh
-    ```
+```bash
+run_pipeline.sh
+```
 
 
 This performs:
@@ -134,9 +135,9 @@ Instruction fine-tuning
 Checkpoint saving
 
 ## 🔍 Inference
-    ```bash
-    python scripts/infer.py \ --prompt "Explain gradient descent in simple terms."
-    ```
+```bash
+python scripts/infer.py \ --prompt "Explain gradient descent in simple terms."
+```
 
 
 The fine-tuned model produces:
@@ -167,15 +168,15 @@ Task-specific metrics
 
 ## 📈 Results & Observations
 
-⚡ Faster training compared to standard HF loading
+- ⚡ Faster training compared to standard HF loading
 
-💾 Significant VRAM reduction using Unsloth
+- 💾 Significant VRAM reduction using Unsloth
 
-📈 Improved instruction adherence after fine-tuning
+- 📈 Improved instruction adherence after fine-tuning
 
-🧠 Stable convergence on alpaca-gpt4
+- 🧠 Stable convergence on alpaca-gpt4
 
-💡 Use Cases
+- 💡 Use Cases
 
 Instruction-following AI assistants
 
